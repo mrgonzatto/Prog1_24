@@ -68,4 +68,6 @@ decimal myDecimal = 7m;
 int myInteger = 0;
 
 
+myDouble = Convert.ToDouble(Console.ReadLine());
+
 
