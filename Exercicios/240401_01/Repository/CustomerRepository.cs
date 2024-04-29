@@ -24,5 +24,10 @@ namespace _240401_01.Repository
 
             return null;
         }
+
+        public List<Customer> Retrieve()
+        {
+            return DataSet.Customers;
+        }
     }
 }
