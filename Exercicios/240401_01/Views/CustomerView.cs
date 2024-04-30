@@ -10,9 +10,11 @@ namespace _240401_01.Views
     public class CustomerView
     {
         private CustomerController customerController;
+        private AddressView addressView;
 
         public CustomerView()
         {
+            addressView = new AddressView();
             customerController = new CustomerController();
             this.Init();
         }
@@ -60,5 +62,53 @@ namespace _240401_01.Views
             }while(aux);
         }
 
+        private void InsertCustomer()
+        {
+            Console.WriteLine("***********************");
+            Console.WriteLine("INSERIR NOVO CONSUMIDOR");
+            Console.WriteLine("***********************");
+
+            Customer customer = new Customer();
+            
+            Console.Write("Nome:");
+            customer.Name = Console.ReadLine();
+            Console.WriteLine("");
+
+            Console.Write("Email:");
+            customer.EmailAddress = Console.ReadLine();
+            Console.WriteLine("");
+            
+            int aux = 0;
+            do{
+                Console.WriteLine("Deseja informar endereço?");
+                Console.WriteLine("0 - Não");
+                Console.WriteLine("1 - Sim");
+                try
+                {
+                    aux = Convert.ToInt32(Console.ReadLine());
+                    if(aux == 1)
+                    {
+                        customer.Addresses.Add(addressView.Insert());
+                    }
+                    else if( aux == 0 )
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        aux = 1;
+                        Console.WriteLine("Opção inválida.");
+                        Console.WriteLine("Tente novamente.");                        
+                    }
+                }  
+                catch
+                {
+                    aux = 1;
+                    Console.WriteLine("Opção inválida.");
+                    Console.WriteLine("Tente novamente.");
+                }              
+            }while(aux != 0);
+
+        }
     }
 }

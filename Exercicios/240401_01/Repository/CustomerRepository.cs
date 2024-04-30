@@ -29,5 +29,17 @@ namespace _240401_01.Repository
         {
             return DataSet.Customers;
         }
+
+        private int GetNextId()
+        {
+            int n = 0;
+            foreach(var c in DataSet.Customers)
+            {
+                if(c.CustomerId > n)                
+                    n = c.CustomerId;
+            }
+
+            return n++;
+        }        
     }
 }
