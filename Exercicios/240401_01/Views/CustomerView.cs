@@ -43,6 +43,7 @@ namespace _240401_01.Views
                             aux = false;
                         break;
                         case 1:
+                            InsertCustomer();
                         break;
                         case 2:
                         break;
@@ -109,6 +110,68 @@ namespace _240401_01.Views
                 }              
             }while(aux != 0);
 
+        }
+
+        private void SearchCustomer()
+        {    
+            int aux = -1;
+            do
+            {
+                Console.WriteLine("PESQUISAR CLIENTE");
+                Console.WriteLine("*****************");
+                Console.WriteLine("1 - Buscar por Id");
+                Console.WriteLine("2 - Buscar por nome");
+                Console.WriteLine("0 - Sair");   
+
+                string menuOpt = Console.ReadLine();
+                aux = Convert.ToInt16(menuOpt);
+                switch(aux)
+                {
+                    case 1:
+                        Console.WriteLine("Informe o id:");
+                        int id = Convert.ToInt32(Console.ReadLine());
+                        ShowCustomerById(id);
+                    break;
+                    case 2:
+                        Console.WriteLine("Informe o nome:");
+                        string name = Console.ReadLine();
+                        ShowCustomersByName(name);
+                    break;
+                    default: 
+                        aux = -1;
+                        Console.WriteLine("Opção inválida!");
+                    break;
+                }                         
+            } while(aux != 0);            
+        }
+
+        private void ShowCustomerById(int id)
+        {
+            Customer c = customerController.Get(id);
+            if(c != null)
+            {
+                Console.WriteLine(c.ToString());
+            }
+            else
+            {
+                Console.WriteLine($"Consumidor de id {id} não encontrado!");
+            }
+        }
+
+        private void ShowCustomersByName(string name)
+        {
+            List<Customer> result = customerController.GetByName(name);
+
+            if( (result == null || result?.Count == 0 ))
+            {
+                Console.WriteLine("Não encontrado!");
+                return;                
+            }
+
+            foreach(Customer customer in result)
+            {
+                Console.WriteLine(customer.ToString());
+            }
         }
     }
 }
