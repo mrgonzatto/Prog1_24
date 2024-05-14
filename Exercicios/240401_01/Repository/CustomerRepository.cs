@@ -11,6 +11,7 @@ namespace _240401_01.Repository
     {                
         public void Save(Customer customer)
         {
+            customer.CustomerId = this.GetNextId();
             DataSet.Customers.Add(customer);
         }
 
@@ -53,7 +54,7 @@ namespace _240401_01.Repository
                     n = c.CustomerId;
             }
 
-            return n++;
+            return ++n;
         }        
     }
 }
