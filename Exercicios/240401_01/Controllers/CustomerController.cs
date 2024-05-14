@@ -22,13 +22,18 @@ namespace _240401_01.Controllers
         }
 
         public Customer Get(int id)
-        {
+        {            
             return customerRepository.Retrieve(id);
         }
 
         public List<Customer> Get()
         {
             return customerRepository.Retrieve();
+        }
+
+        public List<Customer> GetByName(string name)
+        {
+            return customerRepository.RetrieveByName(name);
         }
     }
 }

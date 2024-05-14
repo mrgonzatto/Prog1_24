@@ -11,6 +11,7 @@ namespace _240401_01.Repository
     {                
         public void Save(Customer customer)
         {
+            customer.CustomerId = this.GetNextId();
             DataSet.Customers.Add(customer);
         }
 
@@ -29,5 +30,31 @@ namespace _240401_01.Repository
         {
             return DataSet.Customers;
         }
+
+        public List<Customer> RetrieveByName(string name)
+        {
+            List<Customer> retorno = new List<Customer>();
+            foreach(var c in DataSet.Customers)
+            {
+                if(c.Name.Contains(name))
+                {
+                    retorno.Add(c);
+                }
+            }
+
+            return retorno;
+        }
+
+        private int GetNextId()
+        {
+            int n = 0;
+            foreach(var c in DataSet.Customers)
+            {
+                if(c.CustomerId > n)                
+                    n = c.CustomerId;
+            }
+
+            return ++n;
+        }        
     }
 }

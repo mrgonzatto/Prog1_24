@@ -10,9 +10,11 @@ namespace _240401_01.Views
     public class CustomerView
     {
         private CustomerController customerController;
+        private AddressView addressView;
 
         public CustomerView()
         {
+            addressView = new AddressView();
             customerController = new CustomerController();
             this.Init();
         }
@@ -41,10 +43,13 @@ namespace _240401_01.Views
                             aux = false;
                         break;
                         case 1:
+                            InsertCustomer();
                         break;
                         case 2:
+                            SearchCustomer();
                         break;
                         case 3: 
+                            ListCustomers();
                         break;
                         default: 
                             Console.WriteLine("Opção inválida.");
@@ -60,5 +65,144 @@ namespace _240401_01.Views
             }while(aux);
         }
 
+        private void InsertCustomer()
+        {
+            Console.WriteLine("***********************");
+            Console.WriteLine("INSERIR NOVO CONSUMIDOR");
+            Console.WriteLine("***********************");
+
+            Customer customer = new Customer();
+            
+            Console.Write("Nome:");
+            customer.Name = Console.ReadLine();
+            Console.WriteLine("");
+
+            Console.Write("Email:");
+            customer.EmailAddress = Console.ReadLine();
+            Console.WriteLine("");
+            
+            int aux = 0;
+            do{
+                Console.WriteLine("Deseja informar endereço?");
+                Console.WriteLine("0 - Não");
+                Console.WriteLine("1 - Sim");
+                try
+                {
+                    aux = Convert.ToInt32(Console.ReadLine());
+                    if(aux == 1)
+                    {
+                        customer.Addresses.Add(addressView.Insert());
+                    }
+                    else if( aux == 0 )
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        aux = 1;
+                        Console.WriteLine("Opção inválida.");
+                        Console.WriteLine("Tente novamente.");                        
+                    }
+                }  
+                catch(Exception ex)
+                {
+                    Console.WriteLine($"Erro: {ex.Message}");
+                    aux = 1;
+                    Console.WriteLine("Opção inválida.");
+                    Console.WriteLine("Tente novamente.");
+                }              
+            }while(aux != 0);
+
+            try{
+                customerController.Insert(customer);
+                Console.WriteLine("Customer inserido com sucesso!");
+            }catch{
+                Console.WriteLine("Ops! Ocorreu um erro.");
+            }
+
+        }
+
+        private void SearchCustomer()
+        {    
+            int aux = -1;
+            do
+            {
+                Console.WriteLine("PESQUISAR CLIENTE");
+                Console.WriteLine("*****************");
+                Console.WriteLine("1 - Buscar por Id");
+                Console.WriteLine("2 - Buscar por nome");
+                Console.WriteLine("0 - Sair");   
+
+                string menuOpt = Console.ReadLine();
+                aux = Convert.ToInt16(menuOpt);
+                switch(aux)
+                {
+                    case 1:
+                        Console.WriteLine("Informe o id:");
+                        int id = Convert.ToInt32(Console.ReadLine());
+                        ShowCustomerById(id);
+                    break;
+                    case 2:
+                        Console.WriteLine("Informe o nome:");
+                        string name = Console.ReadLine();
+                        ShowCustomersByName(name);
+                    break;
+
+                    case 0:
+                    break;
+
+                    default: 
+                        aux = -1;
+                        Console.WriteLine("Opção inválida!");
+                    break;
+                }                         
+            } while(aux != 0);            
+        }
+
+        private void ShowCustomerById(int id)
+        {            
+            Customer? c = customerController.Get(id);
+
+            if(c != null)
+            {
+                Console.WriteLine(c.ToString());
+            }
+            else
+            {
+                Console.WriteLine($"Consumidor de id {id} não encontrado!");
+            }
+        }
+
+        private void ShowCustomersByName(string name)
+        {
+            List<Customer> result = customerController.GetByName(name);
+
+            if( (result == null || result?.Count == 0 ))
+            {
+                Console.WriteLine("Não encontrado!");
+                return;                
+            }
+
+            foreach(Customer customer in result)
+            {
+                Console.WriteLine(customer.ToString());
+            }
+        }
+
+        private void ListCustomers()
+        {
+            List<Customer> result = customerController.Get();
+
+            if( (result == null || result?.Count == 0 ))
+            {
+                Console.WriteLine("Não encontrado!");
+                return;                
+            }
+
+            foreach(Customer customer in result)
+            {
+                Console.WriteLine(customer.ToString());
+            }            
+        }
     }
 }
