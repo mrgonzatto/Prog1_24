@@ -31,6 +31,7 @@ namespace _240401_01.Views
                 Console.WriteLine("1 - Inserir Consumidor");
                 Console.WriteLine("2 - Pesquisar Consumidor");
                 Console.WriteLine("3 - Listar Consumidores");
+                Console.WriteLine("4 - Exportar dados delimitados");
                 Console.WriteLine("0 - Sair");
 
                 int menu = 0;
@@ -50,6 +51,18 @@ namespace _240401_01.Views
                         break;
                         case 3: 
                             ListCustomers();
+                        break;
+                        case 4:
+                        {
+                            if(customerController.ExportToDelimited())
+                            {
+                                Console.WriteLine("Arquivo gerado com sucesso!");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Falha ao gerar arquivo.");
+                            }
+                        }
                         break;
                         default: 
                             Console.WriteLine("Opção inválida.");

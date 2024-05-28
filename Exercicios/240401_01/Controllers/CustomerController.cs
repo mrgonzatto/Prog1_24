@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using _240401_01.Models;
 using _240401_01.Repository;
+using _240401_01.Utils;
 
 namespace _240401_01.Controllers
 {
@@ -34,6 +35,24 @@ namespace _240401_01.Controllers
         public List<Customer> GetByName(string name)
         {
             return customerRepository.RetrieveByName(name);
+        }
+
+        public bool ExportToDelimited()
+        {
+            List<Customer> list = 
+                customerRepository.Retrieve();
+
+            string fileContent = string.Empty;
+            foreach(var c in list)
+            {
+                fileContent += 
+                    $"{c.PrintToExportDelimited()}\n";
+            }
+
+            string fileName = 
+            $"Customer_{DateTimeOffset.Now.ToUnixTimeSeconds()}.txt";
+
+            return ExportToFile.SaveToDelimitedTxt(fileName, fileContent);
         }
     }
 }
